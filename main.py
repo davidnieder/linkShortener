@@ -1,6 +1,6 @@
 # _*_ coding: UTF-8 _*_
 
-from flask import request, render_template, redirect, abort, g
+from flask import request, render_template, redirect, abort, g, jsonify
 from flask import make_response 
 from werkzeug.urls import iri_to_uri
 
@@ -11,7 +11,8 @@ import hashlib, datetime, time, sqlite3
 context = {
     'direct_redirect': True,
     'long_url': None,
-    'short_url': None
+    'short_url': None,
+    'json': False
     }
 
 @app.route('/', methods=['GET'])
@@ -54,9 +55,17 @@ def index():
             context['short_url'] = md5_hash.hexdigest()[:5]
             write_new_entry()
 
+            # return json?
+            if context['json'] == True:
+                return jsonify(long_url=context['long_url'], short_url= \
+                               request.url_root + context['short_url'])
+
             return render_template('new.html', long_url=context['long_url'], \
                                    short_url=request.url_root + context['short_url'])
         else:
+            if context['json'] == True:
+                return jsonify(error='could not parse url')
+
             return render_template('index.html', error='bad_url', \
                                    long_url=context['long_url'], \
 				   direct_redirect=context['direct_redirect'])
@@ -69,12 +78,18 @@ def short_url(id):
     get_long_url()
 
     if context['long_url']:
+        if context['json'] == True:
+            return jsonify(long_url=context['long_url'], short_url= \
+                           request.url_root + context['short_url'])
+
         if context['direct_redirect']:
             return redirect(iri_to_uri(context['long_url']))
         else:
             return render_template('show.html', long_url=context['long_url'], \
                                    short_url=request.url_root+context['short_url'])
     else:
+        if context['json'] == True:
+            return jsonify(error='404')
         abort(404)
 
 def get_long_url():
@@ -108,6 +123,16 @@ def check_for_cookie():
         context['direct_redirect'] = False
     else:
         context['direct_redirect'] = True
+
+@app.before_request
+def return_json():
+    if 'json' in request.args:
+        if request.args['json'] == 'true':
+            context['json'] = True
+        else:
+            context['json'] = False
+    else:
+        context['json'] = False
 
 @app.before_request
 def open_db():
