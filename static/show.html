@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="{{ request.url_root }}static/style.css">
+
+  <title>linkShortener</title>
+
+</head>
+<body>
+<div id="wrapper">
+  <p id="headline">
+  <h2>linkShortener</h2>
+  </p>
+  <p id="show_link_target">
+    The short link
+    <a href="{{ short_url }}">{{ short_url }}</a>
+    points at the URL
+    <a href="{{ long_url }}">{{ long_url }}</a> 
+
+  <p id="footer">
+    <hr>
+    <a href="{{ request.url_root }}">Generate a new link</a> | 
+    <!-- make german attorneys happy -->
+    <a href="/impressum.html">Impressum</a>
+  </p>
+
+</body>
+</html>

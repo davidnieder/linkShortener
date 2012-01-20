@@ -1,0 +1,98 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="{{ request.url_root }}static/style.css">
+
+  <script type="text/javascript">
+    url_field_default_value = 'http://';
+    {%- if direct_redirect %}
+    settings_checkbox_default_value = false;
+    {%- else %}
+    settings_checkbox_default_value = true;
+    {%- endif %}
+
+    function url_field_write_default_value() {
+      document.getElementById('url_field').value = url_field_default_value;
+    }
+
+    function url_clear_field(textfield) {
+      if( textfield.value == url_field_default_value )   {
+        textfield.value = '';
+      }
+    }
+
+    function settings_set_checkbox() {
+      document.getElementById('redirect_checkbox').checked =
+        settings_checkbox_default_value;
+    }
+
+    function settings_submit(checkbox)  {
+      if( checkbox.checked )    {
+        window.location.href = '?noredirect=true&';
+      }
+      else  {
+        window.location.href = '?noredirect=false&';
+      }
+    }
+
+    function site_loaded()  {
+        url_field_write_default_value();
+        settings_set_checkbox();
+    }
+
+  </script>
+
+  <title>linkShortener</title>
+
+</head>
+<body onload="site_loaded()">
+<div id="wrapper">
+  {% if error %}
+  <p id="error">
+    {%- if error=='bad url' %}
+    Sorry, the given URL couldn't be parsed. Try again.
+    {%- endif %}
+  </p>
+  {% endif %}
+
+  <p id="headline">
+  <h2>linkShortener</h2>
+    Just paste your URL in the text field below.
+  </p>
+  <p id="urlinput">
+    <form action="" method="get">
+      <input type="text" size="25" name="longurl" id="url_field"
+        onclick="url_clear_field(this)" >
+      <input type="submit" value="Get short link!">
+    </form>
+  </p>
+
+  <p id="settings_text">
+    <h3>Settings</h3>
+    By default linkShortener will redirect you directly to the site
+    a short link is pointing at.<br>
+    To avoid this behavior activate the checkbox below. This will set
+    a cookie in your browser and
+    instead of redirecting you a page with the original URL will be shown.<br>
+  </p>
+  <p id="settings_form">
+    <form action="/" method="get">
+      <input type="checkbox" name="noredirect" id="redirect_checkbox"
+        onchange="settings_submit(this)">
+      Avoid direct redirecting
+    </form>
+  </p>
+
+  <p id="footer">
+    <hr>
+    <!-- make german attorneys happy -->
+    <a href="/impressum.html">Impressum</a>
+  </p>
+
+</div>
+</body>
+</html>

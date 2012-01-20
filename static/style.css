@@ -1,0 +1,13 @@
+body    {
+  background-color: #f7f7f7;
+}
+
+div#wrapper {
+  width: 640px;
+  margin-left: 10px;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #fff;
+}

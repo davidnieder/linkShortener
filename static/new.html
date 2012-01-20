@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html>
+<head>
+
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" type="text/css" href="{{ request.url_root }}static/style.css">
+
+</head>
+<body>
+<div id="wrapper">
+  <p id="headline">
+  <h2>linkShortener</h2>
+  </p>
+  <p id="newlink">
+    Your new short link for the URL
+    <a href="{{ long_url }}">{{ long_url }}</a> is<br>
+    <input type="text" size="25" onfocus="this.select()"
+      value="{{ short_url }}"> 
+  </p>
+
+  <p id="footer">
+    <hr>
+    <a href="{{ request.url_root }}">Generate a new link</a> | 
+    <!-- make german attorneys happy -->
+    <a href="/impressum.html">Impressum</a>
+  </p>
+
+</div>
+</body>
+</html> 
