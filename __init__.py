@@ -5,7 +5,7 @@ from jinja2 import FileSystemLoader
 
 app = Flask('linkShortener')
 app.jinja_loader = FileSystemLoader(app.root_path + '/static/')
-app.debug = True
+app.debug = False
 
 import main
 
